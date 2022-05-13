@@ -1,1 +1,0 @@
-BEARER_TOKEN = "Your Bearer Token Here"
