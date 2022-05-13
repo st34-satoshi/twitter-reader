@@ -21,6 +21,13 @@ async function loop(){
     }
 }
 
-window.onload = function() {
-    loop();
-};
+function readFreeText(){
+    text = document.getElementById("readMessage").value
+    const uttr = new SpeechSynthesisUtterance(text)
+    uttr.lang = "ja-JP" // en-US
+    speechSynthesis.speak(uttr)
+}
+
+// window.onload = function() {
+//     loop();
+// };
