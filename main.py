@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
+from tweet import search_tweet
 
 app = FastAPI()
 
@@ -16,4 +17,4 @@ def twitter():
 
 @app.get("/tweet")
 def tweet():
-    return {"hello": "twitter"}
+    return search_tweet()
