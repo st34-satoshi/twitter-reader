@@ -7,13 +7,13 @@ api = tweepy.API(auth)
 """
 return {tweet_id: {text: text, user: user name}}
 """
-def search_tweet():
+def search_tweet(query):
     response = {}
-    for status in api.search_tweets(q='"search word"',count=10):
+    for status in api.search_tweets(q=query,count=100):
         # print(status.user.id)
-        print(status.user.name)
-        print(status.text)
-        print(status.id)
+        # print(status.user.name)
+        # print(status.text)
+        # print(status.id)
         # print(status.created_at)
         # print(status.id_str)
 
@@ -21,4 +21,4 @@ def search_tweet():
     return response
 
 if __name__ == '__main__':
-    search_tweet()
+    search_tweet("hello")

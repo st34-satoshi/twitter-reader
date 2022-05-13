@@ -1,4 +1,5 @@
-from fastapi import FastAPI
+from typing import Optional
+from fastapi import FastAPI, Query
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from tweet import search_tweet
@@ -16,5 +17,5 @@ def twitter():
     return FileResponse('./public/twitter.html')
 
 @app.get("/tweet")
-def tweet():
-    return search_tweet()
+def tweet(q: Optional[list[str]] = Query(None)):
+    return search_tweet(q)
