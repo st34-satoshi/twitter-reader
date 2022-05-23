@@ -1,4 +1,4 @@
-MAX_CONTINUE_COUNT = 2; // 36000; // 10 hours
+MAX_CONTINUE_COUNT = 36000; // 10 hours
 
 let ListData = {} // {tweetId: {text: text, user: userName}}
 
@@ -44,16 +44,23 @@ const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
 async function loop(){
     for(let i = 0; i < MAX_CONTINUE_COUNT; i++){
-        console.log("sleep 1 second");
-        // fetchTweet();
+        q = getQuery()
+        response = await fetchTweet(q)
+        await createList(response, true)
+        console.log("sleep 5 second");
         await sleep(1000);
     }
 }
 
-function readText(text){
+async function readText(text){
     const uttr = new SpeechSynthesisUtterance(text)
     uttr.lang = "ja-JP" // en-US
+    uttr.onstart = () => console.log(uttr.text);
     speechSynthesis.speak(uttr)
+
+    return new Promise(resolve => {
+        uttr.onend = resolve;
+    });
 }
 
 function readFreeText(){
@@ -71,7 +78,7 @@ function readSpanTextOf(id){
  * create list
  * data: {tweetId: {text: text, user: userName}}
  */
-function createList(data){
+async function createList(data, read=false){
     var list = document.getElementById('resultList');
     for(item in data){
         if(item in ListData){
@@ -83,5 +90,8 @@ function createList(data){
         li.innerHTML = `<li><span id="${item}">${text}</span> <button onclick="readSpanTextOf('${item}')">read</button> <span>${user}</span></li>`
         list.insertBefore(li, list.firstChild);
         ListData[item] = data[item]
+        if(read){
+            await readText(data[item]['text'])
+        }
     }
 }
