@@ -1,6 +1,7 @@
 MAX_CONTINUE_COUNT = 36000; // 10 hours
 
-let ListData = {} // {tweetId: {text: text, user: userName}}
+let ListData = {}; // {tweetId: {text: text, user: userName}}
+let ContinueLoop = false;
 
 /**
  *
@@ -43,13 +44,22 @@ async function initSearch(){
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
 async function loop(){
+    ContinueLoop = true;
     for(let i = 0; i < MAX_CONTINUE_COUNT; i++){
+        if(!ContinueLoop){
+            break;
+        }
         q = getQuery()
         response = await fetchTweet(q)
         await createList(response, true)
         console.log("sleep 5 second");
         await sleep(1000);
     }
+}
+
+function stopLoop(){
+    ContinueLoop = false;
+    speechSynthesis.cancel();
 }
 
 async function readText(text){
@@ -90,7 +100,7 @@ async function createList(data, read=false){
         li.innerHTML = `<li><span id="${item}">${text}</span> <button onclick="readSpanTextOf('${item}')">read</button> <span>${user}</span></li>`
         list.insertBefore(li, list.firstChild);
         ListData[item] = data[item]
-        if(read){
+        if(read && ContinueLoop){
             await readText(data[item]['text'])
         }
     }
