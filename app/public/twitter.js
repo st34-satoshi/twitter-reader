@@ -98,13 +98,14 @@ async function createList(data, read=false){
         }
         const text = data[item]['text']
         const user = data[item]['user']
+        const userScreenName = data[item]['user_screen_name']
 
         const tr = document.createElement('tr');
         tweetCounter += 1;
         tr.innerHTML = `<th scope="row">${tweetCounter}</th>`
                         + `<td id="${item}">${text}</td>`
                         + `<td><button type="button" class="btn btn-outline-success" onclick="readSpanTextOf('${item}')">read</button></td>`
-                        + `<td>${user}</td>`
+                        + `<td>${user} @${userScreenName}</td>`
         tableBody.insertBefore(tr, tableBody.firstChild);
 
         ListData[item] = data[item]
