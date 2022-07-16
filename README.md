@@ -11,4 +11,4 @@ Read Tweets
 2. open `http://localhost:3001/twitter`
 
 ### Production
-TODO：
+- `docker-compose -f docker-compose.production.yml up -d --build`
