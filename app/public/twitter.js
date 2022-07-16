@@ -2,6 +2,7 @@ MAX_CONTINUE_COUNT = 36000; // 10 hours
 
 let ListData = {}; // {tweetId: {text: text, user: userName}}
 let ContinueLoop = false;
+let tweetCounter = 0; // the number of data (tweet)
 
 /**
  *
@@ -90,15 +91,23 @@ function readSpanTextOf(id){
  */
 async function createList(data, read=false){
     var list = document.getElementById('resultList');
+    const tableBody = document.getElementById('resultTableBody');
     for(item in data){
         if(item in ListData){
             continue
         }
         const text = data[item]['text']
         const user = data[item]['user']
-        var li = document.createElement('li');
-        li.innerHTML = `<li><span id="${item}">${text}</span> <button onclick="readSpanTextOf('${item}')">read</button> <span>${user}</span></li>`
-        list.insertBefore(li, list.firstChild);
+        const userScreenName = data[item]['user_screen_name']
+
+        const tr = document.createElement('tr');
+        tweetCounter += 1;
+        tr.innerHTML = `<th scope="row">${tweetCounter}</th>`
+                        + `<td id="${item}">${text}</td>`
+                        + `<td><button type="button" class="btn btn-outline-success" onclick="readSpanTextOf('${item}')">read</button></td>`
+                        + `<td>${user} @${userScreenName}</td>`
+        tableBody.insertBefore(tr, tableBody.firstChild);
+
         ListData[item] = data[item]
         if(read && ContinueLoop){
             await readText(data[item]['text'])
