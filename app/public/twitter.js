@@ -14,7 +14,7 @@ async function fetchTweet(q) {
     let response;
     try {
       response = await axios.get(
-            `/tweet/?${q}`
+            `/tweet?${q}`
         );
     } catch (error) {
       console.error(error);
